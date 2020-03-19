@@ -1,0 +1,9 @@
+D:\Repositorios\OC1_1S2020_PROY1_201800523\obj\Debug\OC1_1S2020_P1_201800523.csprojAssemblyReference.cache
+D:\Repositorios\OC1_1S2020_PROY1_201800523\obj\Debug\OC1_1S2020_P1_201800523.Form1.resources
+D:\Repositorios\OC1_1S2020_PROY1_201800523\obj\Debug\OC1_1S2020_P1_201800523.Properties.Resources.resources
+D:\Repositorios\OC1_1S2020_PROY1_201800523\obj\Debug\OC1_1S2020_P1_201800523.csproj.GenerateResource.cache
+D:\Repositorios\OC1_1S2020_PROY1_201800523\bin\Debug\OC1_1S2020_P1_201800523.exe.config
+D:\Repositorios\OC1_1S2020_PROY1_201800523\bin\Debug\OC1_1S2020_P1_201800523.exe
+D:\Repositorios\OC1_1S2020_PROY1_201800523\bin\Debug\OC1_1S2020_P1_201800523.pdb
+D:\Repositorios\OC1_1S2020_PROY1_201800523\obj\Debug\OC1_1S2020_P1_201800523.exe
+D:\Repositorios\OC1_1S2020_PROY1_201800523\obj\Debug\OC1_1S2020_P1_201800523.pdb

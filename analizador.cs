@@ -514,20 +514,23 @@ namespace OC1_1S2020_PROY1_201800523
 
 		public void generadorArboles()
 		{
-			Iterator<expresion> e = expresiones.listIterator();
-			while (e.hasNext())
+			
+			while (expresiones.FirstOrDefault() != null)
 			{
-				expresion t = e.next();
-				mArbol m = new mArbol();
+				
+				expresion t = expresiones.First();
+				
+				metodoArbol m = new metodoArbol();
 				m.genArbol(t.getLista());
 				try
 				{
-					m.graficarArbol(t.getNombre());
-					m.generarTablaPrimeros(t.getNombre());
+					m.graficar(t.getNombre());
+					/*m.generarTablaPrimeros(t.getNombre());*/
 				}
-				catch (IOException g)
+				catch (Exception g)
 				{
 				}
+				expresiones.RemoveFirst();
 			}
 		}
 

@@ -27,6 +27,8 @@ namespace OC1_1S2020_PROY1_201800523
 
 		public void genArbol(LinkedList<nodo> nodos)
 		{
+
+	
 			nodo last = new nodo("#", true, false, false);
 			int idt;
 		
@@ -42,9 +44,9 @@ namespace OC1_1S2020_PROY1_201800523
 			nodo aux2 = nodos.First();
 			bool esDerecha = false;
 
-			while (! (nodos.First() == null))
+			while ((nodos.FirstOrDefault() != null))
 			{
-
+		
 				if (esDerecha == false)
 				{
 					if (aux.getEsTerminal() == false)
@@ -57,7 +59,7 @@ namespace OC1_1S2020_PROY1_201800523
 						aux = aux.getIzquierda();
 
 						nodos.RemoveFirst();
-						if (!(nodos.First() == null))
+						if (!(nodos.FirstOrDefault() == null))
 						{
 							aux2 = nodos.First();
 						}
@@ -77,7 +79,7 @@ namespace OC1_1S2020_PROY1_201800523
 						aux = aux.getPrevio().getDerecha();
 
 						nodos.RemoveFirst();
-						if (!(nodos.First() == null))
+						if (!(nodos.FirstOrDefault() == null))
 						{
 							aux2 = nodos.First();
 						}
@@ -103,7 +105,7 @@ namespace OC1_1S2020_PROY1_201800523
 						aux.getDerecha().setPrevio(aux);
 						aux = aux.getDerecha();
 						nodos.RemoveFirst();
-						if (!(nodos.First() == null))
+						if (!(nodos.FirstOrDefault() == null))
 						{
 							aux2 = nodos.First();
 						}
@@ -116,7 +118,7 @@ namespace OC1_1S2020_PROY1_201800523
 						aux = aux.getIzquierda();
 
 						nodos.RemoveFirst();
-						if (!(nodos.First() == null))
+						if (!(nodos.FirstOrDefault() == null))
 						{
 							aux2 = nodos.First();
 						}
@@ -135,7 +137,7 @@ namespace OC1_1S2020_PROY1_201800523
 
 			//genSiguientes();
 
-			imprimirTerminales();
+			/*imprimirTerminales();*/
 
 			/*recorridoPreorden();*/
 			/*System.out.println(escribirArbol(this.raiz));*/
@@ -543,7 +545,7 @@ namespace OC1_1S2020_PROY1_201800523
 		private void generador(String rdot, String rpng)
 		{
 			System.IO.File.WriteAllText(rdot, grafo.ToString());
-			String comandoDot = "C:\\Program Files (x86)\\GraphvizX.XX\\bin\\dot.exe -Tpng " + rdot + " -o " + rpng + " ";
+			String comandoDot = "dot -Tpng " + rdot + " -o " + rpng + " ";
 			var comando = string.Format(comandoDot);
 			var procStart = new System.Diagnostics.ProcessStartInfo("cmd", "/C" + comando);
 			var proc = new System.Diagnostics.Process();
@@ -552,11 +554,11 @@ namespace OC1_1S2020_PROY1_201800523
 			proc.WaitForExit();
 		}
 
-		public void graficar(String texto)
+		public void graficar(String nombre)
 		{
 			grafo = new StringBuilder();
 			String rdot = ruta + "\\imagen.dot";
-			String rpng = ruta + "\\imagen.png";
+			String rpng = ruta +"\\salida"+ "\\"+ nombre + ".png";
 			grafo.Append("digraph G { ");
 			grafo.Append(escribirArbol(this.raiz));
 			grafo.Append("}");
@@ -623,7 +625,7 @@ namespace OC1_1S2020_PROY1_201800523
 
 		public string[] separar(string linea)
 {
-	return linea.Split(",");
+	return linea.Split(',');
 }
     }
 }

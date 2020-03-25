@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,11 @@ namespace OC1_1S2020_PROY1_201800523
 		private LinkedList<token> Out;
 		private LinkedList<token> Errores;
 		private LinkedList<expresion> expresiones;
+
+
+		private bool pyc = false;
+		public bool error = false;
+
 
 		private int estado = 0;
 		private String auxL = "";
@@ -93,7 +99,12 @@ namespace OC1_1S2020_PROY1_201800523
 								case '<':
 									estado = 5;
 									break;
-
+								case '\\':
+									estado = 14;
+									break;
+								case '[':
+									estado = 15;
+									break;
 								case '-':
 									estado = 6;
 									break;
@@ -110,6 +121,7 @@ namespace OC1_1S2020_PROY1_201800523
 									{
 										Console.WriteLine("Caracter no reconcido" + c.ToString());
 										addErrortoken(token.Tipo.ERROR, c.ToString());
+										error = true;
 										estado = 0;
 										nErrores++;
 									}
@@ -132,6 +144,11 @@ namespace OC1_1S2020_PROY1_201800523
 						}
 						else
 						{
+
+							if (entrada.ElementAt(i + 1).Equals(':') || entrada.ElementAt(i + 2).Equals(':') )
+							{
+								pyc = true;
+							}
 							token.Tipo tipoA = verificarPalabra();
 							addtoken(tipoA);
 							i--;
@@ -200,6 +217,7 @@ namespace OC1_1S2020_PROY1_201800523
 							{
 								Console.WriteLine("Caracter no reconcido" + c);
 								addErrortoken(token.Tipo.ERROR, c.ToString());
+								error = true;
 								estado = 0;
 								nErrores++;
 							}
@@ -283,6 +301,7 @@ namespace OC1_1S2020_PROY1_201800523
 									{
 										Console.WriteLine("Caracter no reconcido" + c);
 										addErrortoken(token.Tipo.ERROR, c.ToString());
+										error = true;
 										estado = 0;
 										nErrores++;
 									}
@@ -308,7 +327,8 @@ namespace OC1_1S2020_PROY1_201800523
 							{
 								Console.WriteLine("Caracter no reconcido" + c);
 								addErrortoken(token.Tipo.ERROR, c.ToString());
-								estado = 8;
+								error = true;
+								estado = 0;
 								nErrores++;
 							}
 						}
@@ -392,6 +412,7 @@ namespace OC1_1S2020_PROY1_201800523
 									auxL += entrada.ElementAt(i);
 									Console.WriteLine("Caracter no reconcido" + c);
 									addErrortoken(token.Tipo.ERROR, c.ToString());
+									error = true;
 									estado = 0;
 									nErrores++;
 								}
@@ -470,6 +491,62 @@ namespace OC1_1S2020_PROY1_201800523
 							estado = 0;
 						}
 						break;
+
+					case 14:
+						if (c == 'n')
+						{
+
+							auxL += entrada.ElementAt(i);
+							addtoken(token.Tipo.saltolinea);
+							estado = 0;
+						}else
+						if (c == '\'')
+						{
+
+							auxL += entrada.ElementAt(i);
+							addtoken(token.Tipo.comillasimple);
+							estado = 0;
+						}else
+						if (c == '\"')
+						{
+
+							auxL += entrada.ElementAt(i);
+							addtoken(token.Tipo.comilladoble);
+							estado = 0;
+						}
+						else
+						if (c == '\t')
+						{
+
+							auxL += entrada.ElementAt(i);
+							addtoken(token.Tipo.tabulacion);
+							estado = 0;
+						}
+						else
+						{
+
+							addtoken(token.Tipo.ERROR);
+							estado = 0;
+						}
+						break;
+					case 15:
+						if( !(c == ':' && entrada.ElementAt(i + 1).Equals(']')))
+						{
+							auxL += entrada.ElementAt(i);
+						}
+						else if (c == ':')
+						{
+
+							auxL = "";
+						}
+						
+						else
+						{
+
+							addtoken(token.Tipo.todo);
+							estado = 0;
+						}
+						break;
 					default:
 						break;
 
@@ -515,9 +592,10 @@ namespace OC1_1S2020_PROY1_201800523
 		public void generadorArboles()
 		{
 			
+			
 			while (expresiones.FirstOrDefault() != null)
 			{
-				
+			
 				expresion t = expresiones.First();
 				
 				metodoArbol m = new metodoArbol();
@@ -533,6 +611,34 @@ namespace OC1_1S2020_PROY1_201800523
 				expresiones.RemoveFirst();
 			}
 		}
+
+
+		public LinkedList<listaExpresiones> generadorAFN()
+		{
+			LinkedList<listaExpresiones> listaDeExpresiones = new LinkedList<listaExpresiones>();
+			DataTable temp = new DataTable();
+			while (expresiones.FirstOrDefault() != null)
+			{
+
+				expresion t = expresiones.First();
+
+				metodoArbol m = new metodoArbol();
+				m.genArbol(t.getLista());
+				m.transformar();
+
+				m.graficar(t.getNombre());
+
+				temp = m.generadorNodosAFN(t.getNombre());
+
+				
+				listaDeExpresiones.AddLast(new listaExpresiones(t.getNombre(), temp));
+				
+				expresiones.RemoveFirst();
+			}
+			
+			return listaDeExpresiones;
+		}
+
 
 		public Boolean EsSeparador(int posicion, int ascii, int cantidadCaracteres)
 		{
@@ -565,8 +671,13 @@ namespace OC1_1S2020_PROY1_201800523
 					}
 					else
 					{  //Def expresiones
-						expresion e = new expresion(auxL);
-						expresiones.AddLast(e);
+					
+						if(pyc == false)
+						{
+							expresion e = new expresion(auxL);
+							expresiones.AddLast(e);
+						}
+				
 						return token.Tipo.ID;
 
 					}

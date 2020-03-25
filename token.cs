@@ -36,6 +36,11 @@ namespace OC1_1S2020_PROY1_201800523
 			Comentario,
 			Terminal,
 			lexema,
+			todo,
+			saltolinea,
+			comillasimple,
+			comilladoble,
+			tabulacion,
 			ERROR
 		}
 
@@ -112,6 +117,16 @@ namespace OC1_1S2020_PROY1_201800523
 					return "Es Terminal";
 				case Tipo.lexema:
 					return "Es Lexema";
+				case Tipo.todo:
+					return "Todo";
+				case Tipo.saltolinea:
+					return "Salto de Linea";
+				case Tipo.comillasimple:
+					return "Comilla Simple";
+				case Tipo.comilladoble:
+					return "Comilla Doble";
+				case Tipo.tabulacion:
+					return "Tabulacion";
 				default:
 					return "00";
 			}
@@ -177,6 +192,16 @@ namespace OC1_1S2020_PROY1_201800523
 					return "26";
 				case Tipo.lexema:
 					return "27";
+				case Tipo.todo:
+					return "28";
+				case Tipo.saltolinea:
+					return "29 de Linea";
+				case Tipo.comillasimple:
+					return "30";
+				case Tipo.comilladoble:
+					return "31";
+				case Tipo.tabulacion:
+					return "32";
 				default:
 					return "00";
 			}
